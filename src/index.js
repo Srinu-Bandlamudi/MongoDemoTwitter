@@ -10,6 +10,6 @@ const Comment=require('./models/comment');
        await connect();
         console.log("database connected");
         const tweetRepo=new TweetRepository();
-        const tweet=await tweetRepo.getWithComments('65ccce07cd78b58d6e306f0e');
-        console.log(tweet);
+        const tweet=await tweetRepo.getAll(0,4);
+        console.log(tweet[0].contentWithEmail);
     });
