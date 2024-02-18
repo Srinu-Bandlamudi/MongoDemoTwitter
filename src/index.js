@@ -1,17 +1,15 @@
 const express=require('express');
 const connect=require('./config/database');
 const app=express();
-const TweetRepository=require('./repository/tweet-repository');
-
-const Comment=require('./models/comment');
-
+const Tweet=require('./models/tweet');
     app.listen(3000,async ()=>{
         console.log("Server started");
-       await connect();
+        await connect();
         console.log("database connected");
-        const tweetRepo=new TweetRepository();
-        const tweet=await tweetRepo.create({content:"trying with hooks"});
-        console.log(tweet);
-        // const tweet=await tweetRepo.getAll(0,4);
-        // console.log(tweet[0].contentWithEmail);
+        
+        const tweets=await Tweet.find({
+            content:["First tweet"]
+        });
+        console.log(tweets);
+    
     });
