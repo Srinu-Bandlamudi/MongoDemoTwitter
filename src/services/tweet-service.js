@@ -1,25 +1,29 @@
-const {TweetRepository}=require('../repository/index');
+const {TweetRepository,HashtagRepository}=require('../repository/index');
 
 class TweetService{
     constructor(){
         this.tweetRepository=new TweetRepository();
+        this.hashtagRepository=new HashtagRepository();
+
     }
     
     async create(data){
         const content=data.content;
-        const tags=content.match(/#[a-zA-Z0-9_]+/g); //this regex extracts hashtags
-        tags=tags.map((tag)=>tag.substring(1));
-        consolelog(tags);
+        const tags=content.match(/#[a-zA-Z0-9_]+/g).map((tag)=>tag.substring(1)); //this regex extracts hashtags
         const tweet =await this.tweetRepository.create(data);
+        let alreadyCreatedTags=await this.hashtagRepository.findByName(tags);
+        let titleOfPresenttags=alreadyCreatedTags.map(tags=>tags.title);
+        let newTags=tags.filter(tag=>!titleOfPresenttags.includes(tag));
+        newTags=newTags.map(tag=>{
+            return {title:tag,tweets:[tweet.id]}
+        });
+        await this.hashtagRepository.bulkCreate(newTags);
+        alreadyCreatedTags.forEach((tag)=>{
+            tag.tweets.push(tweet.id);
+            tag.save();
+        });
 
-
-        /***
-         * 1.bulkcreate in mongoose
-         * 2.filter title of hashtags based on multiple tags
-         * 3. How to add tweet inside all hashtags 
-         * 
-         */
-        return tweet;
+       return tweet;
     }
 }
 
