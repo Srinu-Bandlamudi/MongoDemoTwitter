@@ -1,6 +1,6 @@
 
 class CrudRepository{
-    constructor(){
+    constructor(model){
         this.model=model;
     }
     async create(data){
@@ -10,7 +10,7 @@ class CrudRepository{
             
         } catch (error) {
             console.log('Something went wrong in Crud repository');
-            throw { error };
+            throw error;
             
         }
     }
@@ -34,13 +34,14 @@ class CrudRepository{
             throw { error };
             
         }
-    }
+    } 
     async getAll(){
         try {
-            const response=await this.model.findById({});
+            const response=await this.model.find({});
             return response;
         } catch (error) {
-            console.log('Something went wrong in Crud repository');
+            console.log('Something went wrong in ==Crud repository');
+            console.log("Problem is here");
             throw { error };
             
         }
