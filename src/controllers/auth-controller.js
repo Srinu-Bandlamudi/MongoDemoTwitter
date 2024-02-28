@@ -16,7 +16,29 @@ export const signup=async (req,res)=>{
             err:{}
         });
     } catch (error) {
-        return res.status(201).json({
+        return res.status(500).json({
+            success:false,
+            data:{},
+            message:"Something went wrong",
+            err:error
+        });
+    }
+}
+
+export const login=async (req,res)=>{
+    try {
+        const token=await userService.signin(req.body);
+        return res.status(200).json({
+            success:true,
+            data:token,
+            message:"succesfully logged in",
+            err:{}
+        });
+       
+        
+    } catch (error) {
+        console.log("problem");
+        return res.status(500).json({
             success:false,
             data:{},
             message:"Something went wrong",
