@@ -16,8 +16,8 @@ passportAuth(passport);
 
 app.use('/api',apiRoutes);
 
-    app.listen(3007,async ()=>{
-        console.log("Server started");
-        await connect();
-        console.log("database connected"); 
-    });
+app.listen(3007,async ()=>{
+    console.log("Server started");
+    await connect();
+    console.log("database connected"); 
+});
